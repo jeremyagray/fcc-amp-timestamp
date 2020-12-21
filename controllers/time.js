@@ -22,8 +22,9 @@ exports.getDateString = function(request, response) {
   }
 
   if (now.toString() === 'Invalid Date') {
+    // FCC tests fail on status 400.
     return response
-      .status(400)
+      // .status(400)
       .json({
         'error': 'Invalid Date'
       });

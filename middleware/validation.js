@@ -8,8 +8,10 @@ exports.validationErrorReporterJSON = function(request, response, next) {
   const errors = validationResult(request);
 
   // Bail on errors.
+  // FCC tests fail on status 400.
   if (! errors.isEmpty()) {
-    return response.status(400)
+    return response
+      // .status(400)
       .json({'error': 'Invalid Date'});
   }
 

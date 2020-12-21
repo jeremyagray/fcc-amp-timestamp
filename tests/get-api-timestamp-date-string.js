@@ -44,7 +44,8 @@ describe('GET /api/timestamp/:date_string', async function() {
       try {
         const invalidDates = [
           'bob-is-your-uncle',
-          'h@ckm3'
+          'h@ckm3',
+          '&&'
         ];
 
 
@@ -52,7 +53,8 @@ describe('GET /api/timestamp/:date_string', async function() {
           let response = await chai.request(server)
             .get(`/api/timestamp/${invalidDates[i]}`);
 
-          expect(response).to.have.status(400);
+          // FCC tests fail on status 400.
+          // expect(response).to.have.status(400);
           expect(response).to.be.json;
           expect(response.body).to.be.a('object');
 
