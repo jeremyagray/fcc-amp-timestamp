@@ -42,12 +42,12 @@
     "url": "git+https://github.com/jeremyagray/fcc-amp-timeserver.git"
   },
   "scripts": {
-    "cover": "nyc --reporter=text --reporter=html mocha --timeout 5000 --recursive --exit --ui tdd tests",
+    "cover": "nyc --reporter=text --reporter=html mocha --recursive --exit tests",
     "docs": "jsdoc -c ./.jsdoc.json",
     "lint": "eslint '**/*.js'",
     "lint-fix": "eslint '**/*.js' --fix",
     "start": "nodemon server.js",
-    "test": "mocha --timeout 5000 --recursive --exit --ui tdd tests"
+    "test": "mocha --recursive --exit tests"
   },
   "version": "0.0.1"
 }
