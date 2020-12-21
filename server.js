@@ -1,64 +1,84 @@
-// server.js
-// where your node app starts
+'use strict';
 
-// Get express.
-let express = require('express');
-let app = express();
+// Load the environment variables.
+require('dotenv').config();
 
-// enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
-// so that your API is remotely testable by FCC 
-var cors = require('cors');
-app.use(cors({optionSuccessStatus: 200}));  // some legacy browsers choke on 204
+const bodyParser = require('body-parser');
+const express = require('express');
+const favicon = require('serve-favicon');
+const path = require('path');
 
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
+// Middleware.
+const helmet = require('./middleware/helmet.js');
 
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
-});
+// Routing.
+const helloRoute = require('./routes/hello.js');
+const timeRoutes = require('./routes/time.js');
 
+// Express.
+const app = express();
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
-});
+async function start() {
+  try {
+    // Helmet middleware.
+    app.use(helmet.config);
+    
+    // Serve the favicon.
+    app.use(favicon(path.join(process.cwd(), 'public', 'favicon.ico')));
+    
+    // Use body parser for post data.
+    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.json());
 
-app.get("/api/timestamp", (req, res) =>
-{
-  let now = new Date;
-  let unix = now.valueOf();
-  let utc = now.toUTCString();
-  res.json({'unix': unix, 'utc': utc});
-});
+    // app.set('trust proxy', true);
 
-app.get('/api/timestamp/:date_string?', (req, res) =>
-{
-  let now = new Date();
+    // Set static directory.
+    app.use('/public', express.static(path.join(process.cwd(), 'public')));
 
-  if (/^\d+$/.test(req.params.date_string) && ! isNaN(parseInt(req.params.date_string)))
-  {
-    now = new Date(parseInt(req.params.date_string));
+    // Set view directory and view engine.
+    app.set('views', path.join(process.cwd(), 'views'));
+    app.set('view engine', 'pug');
+
+    // Serve index.
+    app.route('/')
+      .get(function(request, response) {
+        return response.render('index');
+      });
+
+    // Serve views.
+    // app.route('/:page')
+    //   .get(function(request, response) {
+    //     return response.render(request.params.page);
+    //   });
+
+    // Application routes.
+    app.use('/api/hello', helloRoute);
+    app.use('/api/timestamp', timeRoutes);
+    
+    // 404 middleware.
+    app.use((request, response) => {
+      return response
+        .status(404)
+        .render('404');
+    });
+
+    // Run server and/or tests.
+    const port = process.env.PORT || 3000;
+    const name = 'fcc-amp-timeserver';
+    const version = '0.0.1';
+
+    await app.listen(port);
+    console.log(`${name}@${version} listening on port ${port}...`);
+    if (process.env.NODE_ENV === 'test') {
+      console.log(`${name}@${version} ready to run tests...`);
+    }
+  } catch (error) {
+    console.error(error);
   }
-  else
-  {
-    now = new Date(req.params.date_string);
-  }
+}
 
-  if (now.toString() === 'Invalid Date')
-  {
-    res.json({'error': 'Invalid Date'});
-  }
-  else
-  {
-    let unix = now.valueOf();
-    let utc = now.toUTCString();
-    res.json({'unix': unix, 'utc': utc});
-  }
-});
+// Start the server.
+(async function() { await start(); })();
 
-// listen for requests :)
-let listener = app.listen(process.env.PORT, () =>
-{
-  console.log('Your app is listening on port ' + listener.address().port);
-});
+// Export app for testing.
+module.exports = app;
