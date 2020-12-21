@@ -4,6 +4,7 @@
 require('dotenv').config();
 
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const express = require('express');
 const favicon = require('serve-favicon');
 const path = require('path');
@@ -23,6 +24,12 @@ async function start() {
     // Helmet middleware.
     app.use(helmet.config);
     
+    // Use CORS.
+    app.use(cors({
+      origin: '*',
+      optionSuccessStatus: 200
+    }));
+
     // Serve the favicon.
     app.use(favicon(path.join(process.cwd(), 'public', 'favicon.ico')));
     
