@@ -18,7 +18,7 @@ describe('GET /api/timestamp/:date_string', async function() {
         let dateObj = new Date(date);
 
         let response = await chai.request(server)
-            .get(`/api/timestamp/${date}`);
+          .get(`/api/timestamp/${date}`);
 
         expect(response).to.have.status(200);
         expect(response).to.be.json;
@@ -50,7 +50,7 @@ describe('GET /api/timestamp/:date_string', async function() {
 
         for (let i = 0; i < invalidDates.length; i++) {
           let response = await chai.request(server)
-              .get(`/api/timestamp/${invalidDates[i]}`);
+            .get(`/api/timestamp/${invalidDates[i]}`);
 
           expect(response).to.have.status(400);
           expect(response).to.be.json;

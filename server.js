@@ -78,7 +78,9 @@ async function start() {
 }
 
 // Start the server.
-(async function() { await start(); })();
+(async function() {
+  await start(); 
+})();
 
 // Export app for testing.
 module.exports = app;

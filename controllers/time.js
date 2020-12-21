@@ -15,26 +15,20 @@ exports.getDateString = function(request, response) {
   let now;
 
   if (/^\d+$/.test(request.params.date_string)
-      && ! isNaN(parseInt(request.params.date_string)))
-  {
+      && ! isNaN(parseInt(request.params.date_string))) {
     now = new Date(parseInt(request.params.date_string));
-  }
-  else
-  {
+  } else {
     now = new Date(request.params.date_string);
   }
 
-  if (now.toString() === 'Invalid Date')
-  {
+  if (now.toString() === 'Invalid Date') {
     return response
       .status(400)
       .json({
         'error': 'Invalid Date'
       });
-  }
-  else {
-    let unix = now.valueOf();
-    let utc = now.toUTCString();
+  } else {
+
     return response
       .status(200)
       .json({
@@ -42,4 +36,4 @@ exports.getDateString = function(request, response) {
         'utc': now.toUTCString()
       });
   }
-}
+};

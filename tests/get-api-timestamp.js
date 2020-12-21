@@ -16,7 +16,7 @@ describe('GET /api/timestamp', async function() {
       let now = new Date();
 
       let response = await chai.request(server)
-          .get('/api/timestamp');
+        .get('/api/timestamp');
 
       expect(response).to.have.status(200);
       expect(response).to.be.json;

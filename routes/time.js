@@ -8,12 +8,12 @@ const validation = require('../middleware/validation.js');
 const timeController = require('../controllers/time.js');
 
 router.get('',
-           timeController.getNow
-          );
+  timeController.getNow
+);
 
 router.get('/:date_string',
-           validation.validateDateString,
-           timeController.getDateString
-          );
+  validation.validateDateString,
+  timeController.getDateString
+);
 
 module.exports = router;
