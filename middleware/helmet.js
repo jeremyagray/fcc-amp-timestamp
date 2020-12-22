@@ -9,19 +9,10 @@ exports.config = helmet({
         '\'self\''
       ],
       scriptSrc: [
-        '\'self\'',
-        'localhost',
-        '\'unsafe-inline\''
-      ],
-      scriptSrcElem: [
-        '\'self\'',
-        'localhost',
-        '\'unsafe-inline\''
+        '\'self\''
       ],
       styleSrc: [
-        '\'self\'',
-        'localhost',
-        '\'unsafe-inline\''
+        '\'self\''
       ]
     }},
   referrerPolicy: {
