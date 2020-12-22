@@ -52,12 +52,6 @@ async function start() {
         return response.render('index');
       });
 
-    // Serve views.
-    // app.route('/:page')
-    //   .get(function(request, response) {
-    //     return response.render(request.params.page);
-    //   });
-
     // Application routes.
     app.use('/api/hello', helloRoute);
     app.use('/api/timestamp', timeRoutes);
