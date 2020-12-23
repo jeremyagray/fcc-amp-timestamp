@@ -22,6 +22,11 @@ const timeRoutes = require('./routes/time.js');
 // Express.
 const app = express();
 
+// Configuration variables.
+const port = process.env.PORT || 3000;
+const name = 'fcc-amp-timeserver';
+const version = '0.1.0';
+
 async function start() {
   try {
     // Logging middleware.
@@ -30,18 +35,23 @@ async function start() {
       logger.clear();
       logger.add(new winston.transports.Console({
         'level': 'silly',
-        'format': winston.format.combine(winston.format.colorize(),
-                                         winston.format.simple())
-      }));
+        'format': winston.format.combine(
+          winston.format.colorize(),
+          winston.format.simple()
+        )}));
       app.use(morgan('dev', {
         'stream': {
-          'write': (message) => { logger.info(message.trim()); }
+          'write': (message) => {
+            logger.info(message.trim());
+          }
         }}));
     } else {
       // Production:  defaults.
       app.use(morgan('combined', {
         'stream': {
-          'write': (message) => { logger.info(message.trim()); }
+          'write': (message) => {
+            logger.info(message.trim());
+          }
         }}));
     }
 
@@ -88,10 +98,6 @@ async function start() {
     });
 
     // Run server and/or tests.
-    const port = process.env.PORT || 3000;
-    const name = 'fcc-amp-timeserver';
-    const version = '0.1.0';
-
     await app.listen(port);
     logger.info(`${name}@${version} listening on port ${port}`);
     if (process.env.NODE_ENV === 'test') {
