@@ -7,7 +7,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const favicon = require('serve-favicon');
+const morgan = require('morgan');
 const path = require('path');
+const winston = require('winston');
 
 // Middleware.
 const helmet = require('./middleware/helmet.js');
@@ -19,8 +21,38 @@ const timeRoutes = require('./routes/time.js');
 // Express.
 const app = express();
 
+// Logger.
+const logger = winston.createLogger({
+  'level': 'silly',
+  'format': winston.format.combine(winston.format.uncolorize(),
+                                   winston.format.timestamp(),
+                                   winston.format.json()),
+  'transports': [
+    new winston.transports.Console()
+  ]
+});
+
 async function start() {
   try {
+    // Logging middleware.
+    if (process.env.NODE_ENV === 'test') {
+      logger.clear();
+      logger.add(new winston.transports.Console({
+        'level': 'silly',
+        'format': winston.format.combine(winston.format.colorize(),
+                                         winston.format.simple())
+      }));
+      app.use(morgan('dev', {
+        'stream': {
+          'write': (message) => { logger.info(message.trim()); }
+        }}));
+    } else {
+      app.use(morgan('combined', {
+        'stream': {
+          'write': (message) => { logger.info(message.trim()); }
+        }}));
+    }
+
     // Helmet middleware.
     app.use(helmet.config);
     
@@ -69,12 +101,13 @@ async function start() {
     const version = '0.1.0';
 
     await app.listen(port);
-    console.log(`${name}@${version} listening on port ${port}...`);
+    logger.info(`${name}@${version} listening on port ${port}`);
     if (process.env.NODE_ENV === 'test') {
-      console.log(`${name}@${version} ready to run tests...`);
+      logger.info(`${name}@${version} ready to run tests`);
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
+    logger.error(`${name}@${version} cowardly refusing to continue with errors...`);
   }
 }
 

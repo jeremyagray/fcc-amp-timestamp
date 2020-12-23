@@ -9,9 +9,11 @@
     "express": "^4.17.0",
     "express-validator": "^6.6.0",
     "helmet": "^4.2.0",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.0",
     "pug": "^3.0.0",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.3.3"
   },
   "description": "FCC AMP Timestamp Microservice Project",
   "devDependencies": {
