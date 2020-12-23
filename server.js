@@ -13,6 +13,7 @@ const winston = require('winston');
 
 // Middleware.
 const helmet = require('./middleware/helmet.js');
+const logger = require('./middleware/logger.js');
 
 // Routing.
 const helloRoute = require('./routes/hello.js');
@@ -21,21 +22,11 @@ const timeRoutes = require('./routes/time.js');
 // Express.
 const app = express();
 
-// Logger.
-const logger = winston.createLogger({
-  'level': 'silly',
-  'format': winston.format.combine(winston.format.uncolorize(),
-                                   winston.format.timestamp(),
-                                   winston.format.json()),
-  'transports': [
-    new winston.transports.Console()
-  ]
-});
-
 async function start() {
   try {
     // Logging middleware.
     if (process.env.NODE_ENV === 'test') {
+      // Development:  dump to console.
       logger.clear();
       logger.add(new winston.transports.Console({
         'level': 'silly',
@@ -47,6 +38,7 @@ async function start() {
           'write': (message) => { logger.info(message.trim()); }
         }}));
     } else {
+      // Production:  defaults.
       app.use(morgan('combined', {
         'stream': {
           'write': (message) => { logger.info(message.trim()); }
