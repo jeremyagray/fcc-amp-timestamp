@@ -11,6 +11,9 @@ const morgan = require('morgan');
 const path = require('path');
 const winston = require('winston');
 
+// Test runner.
+const runner = require('./runner.js');
+
 // Middleware.
 const helmet = require('./middleware/helmet.js');
 const logger = require('./middleware/logger.js');
@@ -30,7 +33,7 @@ const version = '0.1.0';
 async function start() {
   try {
     // Logging middleware.
-    if (process.env.NODE_ENV === 'test') {
+    if (process.env.NODE_ENV === 'development') {
       // Development:  dump to console.
       logger.clear();
       logger.add(new winston.transports.Console({
@@ -45,6 +48,10 @@ async function start() {
             logger.info(message.trim());
           }
         }}));
+    } else if (process.env.NODE_ENV === 'test') {
+      // Testing:  silence for tests.
+      logger.clear();
+      logger.silent = true;
     } else {
       // Production:  defaults.
       app.use(morgan('combined', {
@@ -98,8 +105,17 @@ async function start() {
     // Run server and/or tests.
     await app.listen(port);
     logger.info(`${name}@${version} listening on port ${port}`);
-    if (process.env.NODE_ENV === 'test') {
-      logger.info(`${name}@${version} ready to run tests`);
+    if (process.env.NODE_ENV === 'test'
+        || process.env.NODE_ENV === 'development') {
+      logger.info(`${name}@${version} preparing to run tests`);
+      setTimeout(function () {
+        try {
+          runner.run();
+        } catch (error) {
+          logger.info(`${name}@${version}:  some tests failed`);
+          logger.error(error);
+        }
+      }, 1500);
     }
   } catch (error) {
     logger.error(error);
