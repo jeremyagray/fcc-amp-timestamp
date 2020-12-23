@@ -71,8 +71,6 @@ async function start() {
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(bodyParser.json());
 
-    // app.set('trust proxy', true);
-
     // Set static directory.
     app.use('/public', express.static(path.join(process.cwd(), 'public')));
 
