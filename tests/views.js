@@ -27,7 +27,7 @@ describe('GET views', async function() {
 
   it('returns /favicon.ico', async function() {
     try {
-      // Get the index page.
+      // Get the favicon.
       const response = await chai.request(server)
         .get('/favicon.ico');
 
@@ -38,24 +38,11 @@ describe('GET views', async function() {
     }
   });
 
-  it('returns /public/favicon.ico', async function() {
+  it('returns /style.css', async function() {
     try {
-      // Get the index page.
+      // Get the style sheet.
       const response = await chai.request(server)
-        .get('/public/favicon.ico');
-
-      expect(response).to.have.status(200);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  });
-
-  it('returns /public/style.css', async function() {
-    try {
-      // Get the index page.
-      const response = await chai.request(server)
-        .get('/public/style.css');
+        .get('/style.css');
 
       expect(response).to.have.status(200);
     } catch (error) {
