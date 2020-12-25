@@ -1,6 +1,4 @@
-assertion-analyser.js
-public/board.js
-public/index.js
-public/thread.js
-routes/fcctesting.js
-test-runner.js
+/.git
+/.nyc_output
+/coverage
+/node_modules
