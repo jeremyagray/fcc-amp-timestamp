@@ -11,6 +11,7 @@ const path = require('path');
 const testDir = './tests';
 
 // Add the JavaScript files in testDir to mocha.
+// eslint-disable-next-line security/detect-non-literal-fs-filename
 fs.readdirSync(testDir).filter((file) => {
   return file.substr(-3) === '.js';
 }).forEach((file) => {

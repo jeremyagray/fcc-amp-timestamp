@@ -51,7 +51,8 @@ describe('GET /api/timestamp/:date_string', async function() {
 
         for (let i = 0; i < invalidDates.length; i++) {
           let response = await chai.request(server)
-            .get(`/api/timestamp/${invalidDates[i]}`);
+          // eslint-disable-next-line security/detect-object-injection
+            .get('/api/timestamp/' + invalidDates[i].toString());
 
           // FCC tests fail on status 400.
           // expect(response).to.have.status(400);
