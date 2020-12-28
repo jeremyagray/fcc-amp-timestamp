@@ -1,3 +1,8 @@
+/* SPDX-License-Identifier: MIT
+ *
+ * Copyright 2020 Jeremy A Gray <jeremy.a.gray@gmail.com>.
+ */
+
 'use strict';
 
 const winston = require('winston');
