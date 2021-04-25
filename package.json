@@ -44,6 +44,36 @@
     "type": "git",
     "url": "git+https://github.com/jeremyagray/fcc-amp-timeserver.git"
   },
+  "pccc": {
+    "header_length": 50,
+    "body_length": 72,
+    "rewrap": true,
+    "spell_check": false,
+    "repair": false,
+    "types": [
+      "build",
+      "ci",
+      "depends",
+      "docs",
+      "feat",
+      "fix",
+      "perf",
+      "refactor",
+      "release",
+      "style",
+      "test"
+    ],
+    "scopes": [
+      "api",
+      "app"
+    ],
+    "footers": [
+      "signed-off-by"
+    ],
+    "required_footers": [
+      "signed-off-by"
+    ]
+  },
   "scripts": {
     "cover": "nyc --reporter=text --reporter=html mocha --recursive --exit tests",
     "docs": "jsdoc -c ./.jsdoc.json",
