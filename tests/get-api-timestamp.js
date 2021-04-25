@@ -15,13 +15,13 @@ chai.use(chaiHttp);
 
 const server = require('../server.js');
 
-describe('GET /api/timestamp', async function() {
+describe('GET /api', async function() {
   it('tells current time', async function() {
     try {
       let now = new Date();
 
       let response = await chai.request(server)
-        .get('/api/timestamp');
+        .get('/api');
 
       expect(response).to.have.status(200);
       expect(response).to.be.json;

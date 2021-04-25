@@ -98,7 +98,7 @@ async function start() {
 
     // Application routes.
     app.use('/api/hello', helloRoute);
-    app.use('/api/timestamp', timeRoutes);
+    app.use('/api', timeRoutes);
     
     // 404 middleware.
     app.use((request, response) => {

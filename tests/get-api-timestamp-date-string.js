@@ -15,7 +15,7 @@ chai.use(chaiHttp);
 
 const server = require('../server.js');
 
-describe('GET /api/timestamp/:date_string', async function() {
+describe('GET /api/:date_string', async function() {
   describe('valid dates', async function() {
     it('ISO-8601 date string should return valid date', async function() {
       try {
@@ -23,7 +23,7 @@ describe('GET /api/timestamp/:date_string', async function() {
         let dateObj = new Date(date);
 
         let response = await chai.request(server)
-          .get(`/api/timestamp/${date}`);
+          .get(`/api/${date}`);
 
         expect(response).to.have.status(200);
         expect(response).to.be.json;
@@ -57,7 +57,7 @@ describe('GET /api/timestamp/:date_string', async function() {
         for (let i = 0; i < invalidDates.length; i++) {
           let response = await chai.request(server)
           // eslint-disable-next-line security/detect-object-injection
-            .get('/api/timestamp/' + invalidDates[i].toString());
+            .get('/api/' + invalidDates[i].toString());
 
           // FCC tests fail on status 400.
           // expect(response).to.have.status(400);
